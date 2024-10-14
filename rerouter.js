@@ -9,7 +9,12 @@ const searchEngines = [
 // Function to extract search query from URL
 function getSearchQueryFromUrl() {
     const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('q');
+    const queryParam = urlParams.get('q');
+    if (queryParam) return queryParam;
+
+    // If no query parameter, use the path
+    const path = window.location.pathname.substring(1); // Remove leading slash
+    return path ? decodeURIComponent(path) : null;
 }
 
 // Function to perform rerouting based on search query
