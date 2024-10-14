@@ -1,18 +1,13 @@
 // Array of search engine configurations
 const searchEngines = [
-    { regex: /^g\s(.+)/i, destination: 'https://www.google.com/search?q=' },
-    { regex: /^b\s(.+)/i, destination: 'https://www.bing.com/search?q=' },
-    { regex: /^ddg\s(.+)/i, destination: 'https://duckduckgo.com/?q=' },
-    { regex: /^yt\s(.+)/i, destination: 'https://www.youtube.com/results?search_query=' },
+    { regex: /^g\+(.+)/i, destination: 'https://www.google.com/search?q=' },
+    { regex: /^b\+(.+)/i, destination: 'https://www.bing.com/search?q=' },
+    { regex: /^ddg\+(.+)/i, destination: 'https://duckduckgo.com/?q=' },
+    { regex: /^yt\+(.+)/i, destination: 'https://www.youtube.com/results?search_query=' },
 ];
 
 // Function to extract search query from URL
 function getSearchQueryFromUrl() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const queryParam = urlParams.get('q');
-    if (queryParam) return queryParam;
-
-    // If no query parameter, use the path
     const path = window.location.pathname.substring(1); // Remove leading slash
     return path ? decodeURIComponent(path) : null;
 }
