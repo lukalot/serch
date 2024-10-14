@@ -1,10 +1,10 @@
 // Array of search engine configurations
 const searchEngines = [
-    { regex: /^p\s+(.+)/i, destination: 'https://www.perplexity.ai/search?q=' },
-    { regex: /^ddg\s+(.+)/i, destination: 'https://duckduckgo.com/?q=' },
-    { regex: /^w\s+(.+)/i, destination: 'https://en.wikipedia.org/wiki/Special:Search?search=' },
-    { regex: /^(at what|how to|how does|what does|when does|where does|if the|when the|look up|find the|info on|search for|what is|where is|why does|tell me|write about|explain)\s+(.+)/i, destination: 'https://www.perplexity.ai/search?q=' },
-    { regex: /^(.+)/i, destination: 'https://duckduckgo.com/?q=' }, // Catch-all for DuckDuckGo
+    { regex: /^p\s+/i, destination: 'https://www.perplexity.ai/search?q=' },
+    { regex: /^ddg\s+/i, destination: 'https://duckduckgo.com/?q=' },
+    { regex: /^w\s+/i, destination: 'https://en.wikipedia.org/wiki/Special:Search?search=' },
+    { regex: /^(at what|how to|how does|what does|when does|where does|if the|when the|look up|find the|info on|search for|what is|where is|why does|tell me|write about|explain)\s+/i, destination: 'https://www.perplexity.ai/search?q=' },
+    { regex: /^/, destination: 'https://duckduckgo.com/?q=' }, // Catch-all for DuckDuckGo
 ];
 
 // Function to extract search query from URL
@@ -21,10 +21,8 @@ function rerouteSearch(query) {
     }
 
     for (const engine of searchEngines) {
-        const match = query.match(engine.regex);
-        if (match) {
-            const searchTerm = match[1].replace(/\+/g, ' '); // Replace + with space
-            const encodedSearchTerm = encodeURIComponent(searchTerm).replace(/%20/g, '+'); // Encode and replace %20 with +
+        if (engine.regex.test(query)) {
+            const encodedSearchTerm = encodeURIComponent(query).replace(/%20/g, '+');
             window.location.href = `${engine.destination}${encodedSearchTerm}`;
             return;
         }
