@@ -1,9 +1,10 @@
 // Array of search engine configurations
 const searchEngines = [
-    { regex: /^g\+(.+)/i, destination: 'https://www.google.com/search?q=' },
-    { regex: /^b\+(.+)/i, destination: 'https://www.bing.com/search?q=' },
+    { regex: /^p\+(.+)/i, destination: 'https://www.perplexity.ai/search?q=' },
     { regex: /^ddg\+(.+)/i, destination: 'https://duckduckgo.com/?q=' },
-    { regex: /^yt\+(.+)/i, destination: 'https://www.youtube.com/results?search_query=' },
+    { regex: /^w\+(.+)/i, destination: 'https://en.wikipedia.org/wiki/Special:Search?search=' },
+    { regex: /^(at what|how to|how does|what does|when does|where does|if the|when the|look up|find the|search for|what is|where is|why does)/i, destination: 'https://www.perplexity.ai/search?q=' },
+    { regex: /^(.+)/i, destination: 'https://duckduckgo.com/?q=' }, // Catch-all for DuckDuckGo
 ];
 
 // Function to extract search query from URL
