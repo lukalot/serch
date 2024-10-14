@@ -23,8 +23,9 @@ function rerouteSearch(query) {
     for (const engine of searchEngines) {
         const match = query.match(engine.regex);
         if (match) {
-            const searchTerm = encodeURIComponent(match[1]);
-            window.location.href = `${engine.destination}${searchTerm}`;
+            const searchTerm = match[1].replace(/\+/g, ' '); // Replace + with space
+            const encodedSearchTerm = encodeURIComponent(searchTerm).replace(/%20/g, '+'); // Encode and replace %20 with +
+            window.location.href = `${engine.destination}${encodedSearchTerm}`;
             return;
         }
     }
