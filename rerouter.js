@@ -65,7 +65,7 @@ function rerouteSearch(query) {
 
 // Function to display failure message
 function displaySettingsPage() {
-    window.location.href = 'null.html';
+    window.location.href = 'config.html';
 }
 
 // Execute rerouting on page load
