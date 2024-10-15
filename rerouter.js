@@ -7,6 +7,8 @@ const bangConfigurations = [
     { bang: 'b', destination: 'https://www.bing.com/?q=' },
 ];
 
+const bangPrefix = '';
+
 // Array of pattern configurations
 const patternConfigurations = [
     { // Route to Perplexity if the query is a question
@@ -33,12 +35,11 @@ function rerouteSearch(query) {
     }
 
     // Check for bangs first
-    for (const bang of bangConfigurations) {
-        const bangRegex = new RegExp(`^${bang.symbol}\\s+`, 'i');
-        if (bangRegex.test(query)) {
-            const cleanedQuery = query.replace(bangRegex, '');
+    for (const config of bangConfigurations) {
+        if (query.startsWith(bangPrefix + config.bang + ' ')) {
+            const cleanedQuery = query.substring(bangPrefix.length + config.bang.length + 1);
             const encodedSearchTerm = encodeURIComponent(cleanedQuery).replace(/%20/g, '+');
-            window.location.href = `${bang.destination}${encodedSearchTerm}`;
+            window.location.href = `${config.destination}${encodedSearchTerm}`;
             return;
         }
     }
