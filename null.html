@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serch</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .dropdown {
+            width: 600px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .dropdown-title {
+            background-color: #e0e0e0;
+            padding: 10px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .dropdown-content {
+            display: none;
+        }
+        .dropdown-content.active {
+            display: block;
+        }
+        .row {
+            padding: 1px;
+            margin: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .row input {
+            width: 48%;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+        .gap {
+            width: 5px;
+        }
+        .row input.prefix-input {
+            width: 20px;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            text-align: center;
+        }
+        .prefix-placeholder {
+            width: 20px;
+            padding: 5px;
+            text-align: center;
+            color: #888;
+            font-size: 14px;
+        }
+        .row input.bang-input {
+            width: 45%;
+        }
+        .row input.destination-input {
+            width: 45%;
+        }
+        .add-button {
+            width: 30px;
+            height: 30px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .add-button:hover {
+            background-color: #45a049;
+        }
+        .add-row {
+            padding: 1px;
+            margin: 5px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            height: 30px; /* Match the height of input rows */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="dropdown">
+            <div class="dropdown-title">Bangs</div>
+            <div class="dropdown-content" id="bangsContent">
+                <!-- Bangs content will be dynamically populated -->
+            </div>
+        </div>
+        <div class="dropdown" style="margin-bottom: 0px;">
+            <div class="dropdown-title">Patterns</div>
+            <div class="dropdown-content" id="patternsContent">
+                <!-- Patterns content will be dynamically populated -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Cookie handling functions
+        function setCookie(name, value, days) {
+            const expires = new Date(Date.now() + days * 864e5).toUTCString();
+            document.cookie = name + '=' + encodeURIComponent(JSON.stringify(value)) + '; expires=' + expires + '; path=/';
+        }
+
+        function getCookie(name) {
+            const value = document.cookie.split('; ').find(row => row.startsWith(name + '='));
+            return value ? JSON.parse(decodeURIComponent(value.split('=')[1])) : null;
+        }
+
+        // Data structure
+        let data = {
+            prefix: '!',
+            bangs: [
+                { bang: 'p', destination: 'https://perplexity.ai/search?q=' },
+                { bang: 'ddg', destination: 'https://duckduckgo.com/?q=' },
+                { bang: 'w', destination: 'https://wikipedia.org/wiki/' },
+                { bang: 'g', destination: 'https://google.com/search?q=' },
+                { bang: 'b', destination: 'https://bing.com/search?q=' }
+            ],
+            patterns: [
+                { pattern: '', destination: '' },
+                { pattern: '', destination: '' },
+                { pattern: '', destination: '' }
+            ]
+        };
+
+        // Load data from cookies
+        function loadDataFromCookies() {
+            const cookieData = getCookie('serchData');
+            if (cookieData) {
+                data = cookieData;
+            }
+            renderData();
+        }
+
+        // Save data to cookies
+        function saveDataToCookies() {
+            setCookie('serchData', data, 365); // Save for 1 year
+        }
+
+        // Render data to DOM
+        function renderData() {
+            const bangsContent = document.getElementById('bangsContent');
+            const patternsContent = document.getElementById('patternsContent');
+
+            bangsContent.innerHTML = '';
+            patternsContent.innerHTML = '';
+
+            // Render bangs
+            data.bangs.forEach((bang, index) => {
+                const row = document.createElement('div');
+                row.className = 'row';
+                row.innerHTML = `
+                    ${index === 0 ? `<input type="text" class="prefix-input" maxlength="2" value="${data.prefix}" id="prefixInput">` : `<div class="prefix-placeholder">${data.prefix}</div>`}
+                    <div class="gap"></div>
+                    <input type="text" class="bang-input" placeholder="Bang" value="${bang.bang}">
+                    <div class="gap"></div>
+                    <input type="text" class="destination-input" placeholder="Destination URL" value="${bang.destination}">
+                `;
+                bangsContent.appendChild(row);
+            });
+
+            // Add "+" button for bangs
+            const addBangRow = document.createElement('div');
+            addBangRow.className = 'row add-row';
+            addBangRow.innerHTML = `
+                <div class="prefix-placeholder"></div>
+                <div class="gap"></div>
+                <div style="width: 45%;"></div>
+                <div class="gap"></div>
+                <div style="width: 45%; display: flex; justify-content: flex-end;">
+                    <button class="add-button">+</button>
+                </div>
+            `;
+            bangsContent.appendChild(addBangRow);
+
+            // Render patterns
+            data.patterns.forEach(pattern => {
+                const row = document.createElement('div');
+                row.className = 'row';
+                row.innerHTML = `
+                    <input type="text" placeholder="Pattern" value="${pattern.pattern}">
+                    <div class="gap"></div>
+                    <input type="text" placeholder="Destination URL" value="${pattern.destination}">
+                `;
+                patternsContent.appendChild(row);
+            });
+
+            // Add "+" button for patterns
+            const addPatternRow = document.createElement('div');
+            addPatternRow.className = 'row add-row';
+            addPatternRow.innerHTML = `
+                <div style="width: 48%;"></div>
+                <div class="gap"></div>
+                <div style="width: 48%; display: flex; justify-content: flex-end;">
+                    <button class="add-button">+</button>
+                </div>
+            `;
+            patternsContent.appendChild(addPatternRow);
+
+            // Add event listeners
+            addEventListeners();
+        }
+
+        // Add event listeners
+        function addEventListeners() {
+            const prefixInput = document.getElementById('prefixInput');
+            const bangInputs = document.querySelectorAll('.bang-input');
+            const destinationInputs = document.querySelectorAll('.destination-input');
+            const patternInputs = document.querySelectorAll('#patternsContent input');
+
+            prefixInput.addEventListener('input', function() {
+                data.prefix = this.value;
+                updatePrefixPlaceholders();
+                saveDataToCookies();
+            });
+
+            bangInputs.forEach((input, index) => {
+                input.addEventListener('input', function() {
+                    data.bangs[index].bang = this.value;
+                    saveDataToCookies();
+                });
+            });
+
+            destinationInputs.forEach((input, index) => {
+                input.addEventListener('input', function() {
+                    data.bangs[index].destination = this.value;
+                    saveDataToCookies();
+                });
+            });
+
+            patternInputs.forEach((input, index) => {
+                input.addEventListener('input', function() {
+                    const isPattern = index % 2 === 0;
+                    const patternIndex = Math.floor(index / 2);
+                    if (isPattern) {
+                        data.patterns[patternIndex].pattern = this.value;
+                    } else {
+                        data.patterns[patternIndex].destination = this.value;
+                    }
+                    saveDataToCookies();
+                });
+            });
+
+            // Add new row buttons
+            const addBangButton = document.querySelector('#bangsContent .add-button');
+            const addPatternButton = document.querySelector('#patternsContent .add-button');
+
+            addBangButton.addEventListener('click', () => {
+                data.bangs.push({ bang: '', destination: '' });
+                renderData();
+                saveDataToCookies();
+            });
+
+            addPatternButton.addEventListener('click', () => {
+                data.patterns.push({ pattern: '', destination: '' });
+                renderData();
+                saveDataToCookies();
+            });
+        }
+
+        // Update prefix placeholders
+        function updatePrefixPlaceholders() {
+            const prefixPlaceholders = document.querySelectorAll('.prefix-placeholder');
+            prefixPlaceholders.forEach(placeholder => {
+                placeholder.textContent = data.prefix;
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDataFromCookies();
+
+            document.querySelectorAll('.dropdown-title').forEach(title => {
+                title.addEventListener('click', () => {
+                    const dropdown = title.parentElement;
+                    dropdown.classList.toggle('active');
+                    const content = dropdown.querySelector('.dropdown-content');
+                    content.classList.toggle('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
