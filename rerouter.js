@@ -58,7 +58,7 @@ function rerouteSearch(query) {
 
 // Function to display failure message
 function displayFailureMessage() {
-    document.getElementById('message').textContent = 'Reroute failed';
+    document.getElementById('message').textContent = 'Reroute failed<br>Make sure to provide a valid search query after the forward slash, delimited by + signs, like this: /how+to+do+something';
 }
 
 // Execute rerouting on page load
