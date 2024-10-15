@@ -1,25 +1,32 @@
-// Array of bang configurations
-const bangConfigurations = [
-    { bang: 'p', destination: 'https://www.perplexity.ai/search?q=' },
-    { bang: 'ddg', destination: 'https://duckduckgo.com/?q=' },
-    { bang: 'w', destination: 'https://en.wikipedia.org/wiki/Special:Search?search=' },
-    { bang: 'g', destination: 'https://www.google.com/?q=' },
-    { bang: 'b', destination: 'https://www.bing.com/?q=' },
-];
+// Function to get cookie value
+function getCookie(name) {
+    const value = document.cookie.split('; ').find(row => row.startsWith(name + '='));
+    return value ? JSON.parse(decodeURIComponent(value.split('=')[1])) : null;
+}
 
-const bangPrefix = '';
+// Load configurations from cookies
+function loadConfigurationsFromCookies() {
+    const cookieData = getCookie('serchData');
+    if (cookieData) {
+        bangConfigurations.length = 0; // Clear existing configurations
+        bangConfigurations.push(...cookieData.bangs);
+        bangPrefix = cookieData.prefix;
 
-// Array of pattern configurations
-const patternConfigurations = [
-    { // Route to Perplexity if the query is a question
-        regex: /^(at what|what's|when's|where's|how to|how does|what does|when does|where does|if the|when the|where to|look up|find the|info on|search for|what is|where is|why does|tell me|write about|explain|who is|look for|identify the|difference between|if a|when a)\s+/i,
-        destination: 'https://www.perplexity.ai/search?q='
-    },
-    { // Catch-all for DuckDuckGo
-        regex: /^/,
-        destination: 'https://duckduckgo.com/?q='
+        patternConfigurations.length = 0; // Clear existing configurations
+        patternConfigurations.push(...cookieData.patterns.map(pattern => ({
+            regex: new RegExp(pattern.pattern, 'i'),
+            destination: pattern.destination
+        })));
     }
-];
+}
+
+// Array of bang configurations (will be populated from cookies)
+let bangConfigurations = [];
+
+let bangPrefix = '';
+
+// Array of pattern configurations (will be populated from cookies)
+let patternConfigurations = [];
 
 // Function to extract search query from URL
 function getSearchQueryFromUrl() {
@@ -30,7 +37,7 @@ function getSearchQueryFromUrl() {
 // Function to perform rerouting based on search query
 function rerouteSearch(query) {
     if (!query) {
-        displayFailureMessage();
+        displaySettingsPage();
         return;
     }
 
@@ -53,16 +60,17 @@ function rerouteSearch(query) {
         }
     }
 
-    displayFailureMessage();
+    displaySettingsPage();
 }
 
 // Function to display failure message
-function displayFailureMessage() {
-    document.getElementById('message').textContent = 'Reroute failed. Make sure to provide a valid search query after the forward slash, delimited by + signs, like this: /how+to+do+something';
+function displaySettingsPage() {
+    window.location.href = 'null.html';
 }
 
 // Execute rerouting on page load
 window.onload = function() {
+    loadConfigurationsFromCookies();
     const searchQuery = getSearchQueryFromUrl();
     rerouteSearch(searchQuery);
 };

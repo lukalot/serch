@@ -14,14 +14,15 @@
             font-family: Arial, sans-serif;
         }
         .container {
-            background-color: #f0f0f0;
+            background-color: #fff;
             padding: 20px;
             border-radius: 10px;
+            border: 1px solid #e2e2e2;
         }
         .dropdown {
             width: 600px;
             margin-bottom: 10px;
-            border: 1px solid #ddd;
+            border: 1px solid #ccc;
             border-radius: 5px;
             overflow: hidden;
         }
@@ -75,11 +76,11 @@
             width: 45%;
         }
         .add-button {
-            width: 30px;
-            height: 30px;
-            background-color: #4CAF50;
+            width: 25px;
+            height: 25px;
+            background-color: #bbb;
+            border: 1px solid #999;
             color: white;
-            border: none;
             border-radius: 3px;
             font-size: 20px;
             cursor: pointer;
@@ -90,13 +91,35 @@
         .add-button:hover {
             background-color: #45a049;
         }
+        .add-button-container {
+            width: 45%;
+            display: flex;
+            justify-content: flex-end;
+        }
         .add-row {
             padding: 1px;
             margin: 5px;
             display: flex;
             justify-content: flex-end;
             align-items: center;
-            height: 30px; /* Match the height of input rows */
+            height: 25px; /* Match the height of input rows */
+        }
+        .reset-button-container {
+            display: flex;
+            justify-content: left;
+            margin-top: 10px;
+        }
+        #resetButton {
+            padding: 8px 12px;
+            background-color: #bbb;
+            color: white;
+            border: 1px solid #999;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        #resetButton:hover {
+            background-color: #d32f2f;
         }
     </style>
 </head>
@@ -113,6 +136,9 @@
             <div class="dropdown-content" id="patternsContent">
                 <!-- Patterns content will be dynamically populated -->
             </div>
+        </div>
+        <div class="reset-button-container">
+            <button id="resetButton">Reset to Default</button>
         </div>
     </div>
 
@@ -139,9 +165,8 @@
                 { bang: 'b', destination: 'https://bing.com/search?q=' }
             ],
             patterns: [
-                { pattern: '', destination: '' },
-                { pattern: '', destination: '' },
-                { pattern: '', destination: '' }
+                { pattern: '^(at what|what\'s|when\'s|where\'s|how to|how does|what does|when does|where does|if the|when the|where to|look up|find the|info on|search for|what is|where is|why does|tell me|write about|explain|who is|look for|identify the|difference between|if a|when a)\\s+', destination: 'https://www.perplexity.ai/search?q=' },
+                { pattern: '^', destination: 'https://duckduckgo.com/?q=' }
             ]
         };
 
@@ -185,12 +210,11 @@
             const addBangRow = document.createElement('div');
             addBangRow.className = 'row add-row';
             addBangRow.innerHTML = `
-                <div class="prefix-placeholder"></div>
                 <div class="gap"></div>
                 <div style="width: 45%;"></div>
                 <div class="gap"></div>
-                <div style="width: 45%; display: flex; justify-content: flex-end;">
-                    <button class="add-button">+</button>
+                <div class="add-button-container">
+                    <button class="add-button" style="padding-bottom: 3px;">+</button>
                 </div>
             `;
             bangsContent.appendChild(addBangRow);
@@ -288,6 +312,29 @@
             });
         }
 
+        // Default data
+        const defaultData = {
+            prefix: '!',
+            bangs: [
+                { bang: 'p', destination: 'https://perplexity.ai/search?q=' },
+                { bang: 'ddg', destination: 'https://duckduckgo.com/?q=' },
+                { bang: 'w', destination: 'https://wikipedia.org/wiki/' },
+                { bang: 'g', destination: 'https://google.com/search?q=' },
+                { bang: 'b', destination: 'https://bing.com/search?q=' }
+            ],
+            patterns: [
+                { pattern: '^(at what|what\'s|when\'s|where\'s|how to|how does|what does|when does|where does|if the|when the|where to|look up|find the|info on|search for|what is|where is|why does|tell me|write about|explain|who is|look for|identify the|difference between|if a|when a)\\s+', destination: 'https://www.perplexity.ai/search?q=' },
+                { pattern: '^', destination: 'https://duckduckgo.com/?q=' }
+            ]
+        };
+
+        // Function to reset data to default
+        function resetToDefault() {
+            data = JSON.parse(JSON.stringify(defaultData)); // Deep copy
+            saveDataToCookies();
+            renderData();
+        }
+
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             loadDataFromCookies();
@@ -300,6 +347,9 @@
                     content.classList.toggle('active');
                 });
             });
+
+            // Add event listener for reset button
+            document.getElementById('resetButton').addEventListener('click', resetToDefault);
         });
     </script>
 </body>
