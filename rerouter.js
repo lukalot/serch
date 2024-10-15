@@ -12,7 +12,7 @@ const bangPrefix = '';
 // Array of pattern configurations
 const patternConfigurations = [
     { // Route to Perplexity if the query is a question
-        regex: /^(at what|how to|how does|what does|when does|where does|if the|when the|where to|look up|find the|info on|search for|what is|where is|why does|tell me|write about|explain|who is|look for|identify the|difference between|if a|when a)\s+/i,
+        regex: /^(at what|what's|when's|where's|how to|how does|what does|when does|where does|if the|when the|where to|look up|find the|info on|search for|what is|where is|why does|tell me|write about|explain|who is|look for|identify the|difference between|if a|when a)\s+/i,
         destination: 'https://www.perplexity.ai/search?q='
     },
     { // Catch-all for DuckDuckGo
