@@ -1,12 +1,22 @@
-// Array of search engine configurations
-const searchEngines = [
-    { regex: /^p\s+/i, destination: 'https://www.perplexity.ai/search?q=' },
-    { regex: /^ddg\s+/i, destination: 'https://duckduckgo.com/?q=' },
-    { regex: /^w\s+/i, destination: 'https://en.wikipedia.org/wiki/Special:Search?search=' },
-    { regex: /^g\s+/i, destination: 'https://www.google.com/?q=' },
-    { regex: /^b\s+/i, destination: 'https://www.bing.com/?q=' },
-    { regex: /^(at what|how to|how does|what does|when does|where does|if the|when the|where to|look up|find the|info on|search for|what is|where is|why does|tell me|write about|explain|who is|look for|identify the|difference between|if a|when a)\s+/i, destination: 'https://www.perplexity.ai/search?q=' },
-    { regex: /^/, destination: 'https://duckduckgo.com/?q=' }, // Catch-all for DuckDuckGo
+// Array of bang configurations
+const bangConfigurations = [
+    { bang: 'p', destination: 'https://www.perplexity.ai/search?q=' },
+    { bang: 'ddg', destination: 'https://duckduckgo.com/?q=' },
+    { bang: 'w', destination: 'https://en.wikipedia.org/wiki/Special:Search?search=' },
+    { bang: 'g', destination: 'https://www.google.com/?q=' },
+    { bang: 'b', destination: 'https://www.bing.com/?q=' },
+];
+
+// Array of pattern configurations
+const patternConfigurations = [
+    { // Route to Perplexity if the query is a question
+        regex: /^(at what|how to|how does|what does|when does|where does|if the|when the|where to|look up|find the|info on|search for|what is|where is|why does|tell me|write about|explain|who is|look for|identify the|difference between|if a|when a)\s+/i,
+        destination: 'https://www.perplexity.ai/search?q='
+    },
+    { // Catch-all for DuckDuckGo
+        regex: /^/,
+        destination: 'https://duckduckgo.com/?q='
+    }
 ];
 
 // Function to extract search query from URL
@@ -22,10 +32,22 @@ function rerouteSearch(query) {
         return;
     }
 
-    for (const engine of searchEngines) {
-        if (engine.regex.test(query)) {
+    // Check for bangs first
+    for (const bang of bangConfigurations) {
+        const bangRegex = new RegExp(`^${bang.symbol}\\s+`, 'i');
+        if (bangRegex.test(query)) {
+            const cleanedQuery = query.replace(bangRegex, '');
+            const encodedSearchTerm = encodeURIComponent(cleanedQuery).replace(/%20/g, '+');
+            window.location.href = `${bang.destination}${encodedSearchTerm}`;
+            return;
+        }
+    }
+
+    // Check for patterns second
+    for (const pattern of patternConfigurations) {
+        if (pattern.regex.test(query)) {
             const encodedSearchTerm = encodeURIComponent(query).replace(/%20/g, '+');
-            window.location.href = `${engine.destination}${encodedSearchTerm}`;
+            window.location.href = `${pattern.destination}${encodedSearchTerm}`;
             return;
         }
     }
