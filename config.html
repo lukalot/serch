@@ -4,7 +4,152 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>serch config</title>
+    <!-- Add this line to include Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
+        :root {
+            --background-color: #ffffff;
+            --text-color: #333333;
+            --muted-text-color: #999999;
+            --border-color: #e2e2e2;
+            --input-border-color: #dddddd;
+            --input-background: #fbfbfb;
+            --dropdown-background: #f1f1f1;
+            --button-background: #bbbbbb;
+            --button-border: #999999;
+            --button-hover: #8c8c8c;
+            --button-text-color: #ffffff;
+            --reset-button-hover: #b62525;
+            --reset-button-border-hover: #9a1616;
+            --modal-background: rgba(0,0,0,0.4);
+            --modal-content-background: #ffffff;
+            --modal-header-background: #f1f1f1;
+            --confirm-reset-background: #d32f2f;
+            --confirm-reset-hover: #b71c1c;
+            --link-color: #777777;
+            --link-hover-color: #000000;
+        }
+
+        body, html {
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        .section-container {
+            background-color: var(--background-color);
+            border-color: var(--border-color);
+        }
+
+        .dropdown {
+            border-color: var(--input-border-color);
+            background-color: var(--dropdown-background);
+        }
+
+        .dropdown-title {
+            background-color: var(--dropdown-background);
+        }
+
+        .dropdown-content {
+            border-top-color: var(--border-color);
+        }
+
+        .row input {
+            border-color: var(--input-border-color);
+        }
+
+        .addsub-button {
+            background-color: var(--button-background);
+            border-color: var(--button-border);
+            color: var(--button-text-color);
+        }
+
+        .addsub-button:hover {
+            background-color: var(--button-hover);
+        }
+
+        #resetButton {
+            background-color: var(--button-background);
+            color: var(---button-text-color);
+            border-color: var(--button-border);
+        }
+
+        #resetButton:hover {
+            background-color: var(--reset-button-hover);
+            border-color: var(--reset-button-border-hover);
+        }
+
+        .modal {
+            background-color: var(--modal-background);
+        }
+
+        .modal-content {
+            background-color: var(--modal-content-background);
+            border-color: var(--button-border);
+        }
+
+        .modal-header {
+            background-color: var(--modal-header-background);
+            border-bottom-color: var(--border-color);
+        }
+
+        .modal-buttons {
+            background-color: var(--modal-content-background);
+            border-top-color: var(--border-color);
+        }
+
+        .modal-buttons button {
+            border-color: var(--button-border);
+        }
+
+        #confirmReset {
+            background-color: var(--confirm-reset-background);
+            color: var(--background-color);
+            border-color: var(--reset-button-border-hover);
+        }
+
+        #confirmReset:hover {
+            background-color: var(--confirm-reset-hover);
+        }
+
+        #cancelReset {
+            background-color: var(--button-background);
+            color: var(--background-color);
+            border-color: var(--button-border);
+        }
+
+        #cancelReset:hover {
+            background-color: var(--button-hover);
+        }
+
+        .footer-bar {
+            background-color: var(--background-color);
+        }
+
+        .footer-bar p {
+            color: var(--muted-text-color);
+        }
+
+        a {
+            color: var(--link-color);
+        }
+
+        a:hover {
+            color: var(--link-hover-color);
+        }
+
+        .theme-toggle {
+            background-color: var(--dropdown-background);
+            border-color: var(--button-border);
+        }
+
+        .theme-toggle-option.active {
+            background-color: var(--button-background);
+        }
+
+        .theme-toggle-option i {
+            color: var(--text-color);
+        }
+
         body, html {
             height: 100%;
             margin: 0;
@@ -17,13 +162,14 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            padding-bottom: 40px; /* Adjust this value based on the footer height */
         }
         .section-container {
             margin-bottom: 20px;
-            background-color: #fff;
+            background-color: var(--background-color);
             padding: 10px;
             border-radius: 10px;
-            border: 1px solid #e2e2e2;
+            border: 1px solid var(--border-color);
             width: 550px;
         }
         .section-container-nonvisible {
@@ -34,13 +180,13 @@
         .dropdown {
             width: 600px;
             margin-bottom: 10px;
-            border: 1px solid #ccc;
+            border: 1px solid var(--input-border-color);
             border-radius: 5px;
             overflow: hidden;
-            background-color: #f1f1f1;
+            background-color: var(--dropdown-background);
         }
         .dropdown-title {
-            background-color: #f1f1f1;
+            background-color: var(--dropdown-background);
             padding: 10px;
             cursor: pointer;
             display: flex;
@@ -48,7 +194,7 @@
             align-items: center;
         }
         .dropdown-content {
-            border-top: 1px solid #e2e2e2;
+            border-top: 1px solid var(--border-color);
             display: none;
         }
         .dropdown-content.active {
@@ -63,8 +209,10 @@
         .row input {
             width: 48%;
             padding: 5px;
-            border: 1px solid #ddd;
+            border: 1px solid var(--input-border-color);
             border-radius: 3px;
+            background-color: var(--input-background);
+            color: var(--text-color);
         }
         .gap {
             width: 5px;
@@ -72,30 +220,34 @@
         .row input.prefix-input {
             width: 20px;
             padding: 5px;
-            border: 1px solid #ddd;
+            background-color: var(--input-background);
+            border: 1px solid var(--input-border-color);
+            color: var(--text-color);
             border-radius: 3px;
             text-align: center;
         }
         .prefix-placeholder {
-            width: 20px;
-            padding: 5px;
+            width: 32px;
             text-align: center;
             color: #888;
             font-size: 14px;
         }
         .row input.bang-input {
+            background-color: var(--input-background);
             width: 45%;
         }
         .row input.destination-input {
             width: 45%;
+            background-color: var(--input-background);
         }
-        .add-button {
+        .addsub-button {
+            margin-left: 5px;
             width: 25px;
             height: 25px;
-            background-color: #bbb;
-            border: 1px solid #999;
+            background-color: var(--button-background);
+            border: 1px solid var(--button-border);
             padding-bottom: 3px;
-            color: white;
+            color: var(--background-color);
             border-radius: 3px;
             font-size: 20px;
             cursor: pointer;
@@ -103,15 +255,15 @@
             justify-content: center;
             align-items: center;
         }
-        .add-button:hover {
-            background-color: #45a049;
+        .addsub-button:hover {
+            background-color: var(--button-hover);
         }
-        .add-button-container {
+        .addsub-button-container {
             width: 45%;
             display: flex;
             justify-content: flex-end;
         }
-        .add-row {
+        .addsub-row {
             padding: 1px;
             margin: 5px;
             display: flex;
@@ -126,15 +278,16 @@
         }
         #resetButton {
             padding: 8px 12px;
-            background-color: #bbb;
-            color: white;
-            border: 1px solid #999;
+            background-color: var(--button-background);
+            color: var(--button-text-color);
+            border: 1px solid var(--button-border);
             border-radius: 5px;
             cursor: pointer;
             font-size: 14px;
         }
         #resetButton:hover {
-            background-color: #d32f2f;
+            background-color: var(--reset-button-hover);
+            border-color: var(--reset-button-border-hover);
         }
         .modal {
             display: none;
@@ -144,7 +297,7 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.4);
+            background-color: var(--modal-background);
         }
 
         .modal.active {
@@ -154,23 +307,23 @@
         }
 
         .modal-content {
-            background-color: #fff;
-            border: 1px solid #e2e2e2;
+            background-color: var(--modal-content-background);
+            border: 1px solid var(--button-border);
             border-radius: 10px;
-            width: 400px;
+            width: 370px;
             overflow: hidden;
         }
 
         .modal-header {
-            background-color: #f1f1f1;
-            padding: 10px 15px;
-            border-bottom: 1px solid #e2e2e2;
+            background-color: var(--modal-header-background);
+            padding: 10px 10px;
+            border-bottom: 1px solid var(--border-color);
         }
 
         .modal-header h2 {
             margin: 0;
             font-size: 18px;
-            color: #333;
+            color: var(--text-color);
         }
 
         .modal-body {
@@ -180,14 +333,14 @@
         .modal-buttons {
             display: flex;
             justify-content: flex-end;
-            padding: 10px 15px;
-            background-color: #fff;
-            border-top: 1px solid #e2e2e2;
+            padding: 10px 10px;
+            background-color: var(--modal-content-background);
+            border-top: 1px solid var(--border-color);
         }
 
         .modal-buttons button {
             padding: 8px 12px;
-            border: 1px solid #999;
+            border: 1px solid var(--button-border);
             border-radius: 5px;
             cursor: pointer;
             font-size: 14px;
@@ -195,24 +348,88 @@
         }
 
         #confirmReset {
-            background-color: #d32f2f;
-            color: white;
-            border-color: #b71c1c;
+            background-color: var(--confirm-reset-background);
+            color: var(--background-color);
+            border-color: var(--reset-button-border-hover);
         }
 
         #confirmReset:hover {
-            background-color: #b71c1c;
+            background-color: var(--confirm-reset-hover);
         }
 
         #cancelReset {
-            background-color: #bbb;
-            color: white;
-            border-color: #999;
+            background-color: var(--button-background);
+            color: var(--background-color);
+            border-color: var(--button-border);
         }
 
         #cancelReset:hover {
-            background-color: #999;
+            background-color: var(--button-hover);
         }
+
+        .footer-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--background-color);
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        .footer-bar p {
+            margin: 0;
+            font-size: 12px;
+            color: var(--muted-text-color);
+        }
+        a {
+            color: var(--link-color);
+        }
+        a:hover {
+            color: var(--link-hover-color);
+        }
+
+        .theme-toggle-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 0px;
+        }
+
+        .theme-toggle {
+            background-color: var(--dropdown-background);
+            border: 1px solid var(--button-border);
+            border-radius: 10px; /* Reduced from 20px */
+            display: flex;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .theme-toggle-option {
+            padding: 8px 12px; /* Reduced from 10px 20px */
+            display: flex;
+            align-items: center;
+            transition: background-color 0.2s ease;
+        }
+
+        .theme-toggle-option.active {
+            background-color: var(--button-background);
+        }
+
+        .theme-toggle-option i {
+            font-size: 16px; /* Reduced from 18px */
+            color: var(--text-color);
+        }
+
+        /* Remove these color overrides */
+        /*
+        .theme-toggle-option.light i {
+            color: #f39c12;
+        }
+
+        .theme-toggle-option.dark i {
+            color: #34495e;
+        }
+        */
     </style>
 </head>
 
@@ -220,7 +437,7 @@
     <div class="page-container">
     <div class="section-container-nonvisible">
         <h1 style="font-size: 30px; text-align: center; margin-bottom: 0px;">serch</h1>
-        <p style="text-align: center; color: #999; margin-top: 0px;">search engine router control hub.</p>
+        <p style="text-align: center; color: #999; margin-top: 0px;"><u>s</u>earch <u>e</u>ngine <u>r</u>outer <u>c</u>ontrol <u>h</u>ub.</p>
     </div>
     <div class="section-container">
         <div class="dropdown" title="Bangs are shortcuts that can send you to a specific site's search page, bangs are removed from the beginning of your search query.">
@@ -236,11 +453,23 @@
             </div>
         </div>
         <div class="reset-button-container">
-            <button id="resetButton">Reset to Default</button>
+            <button id="resetButton">reset to default</button>
         </div>
     </div>
     <div class="section-container">
         <p style="margin-left: 20px; margin-right: 20px; text-align: left; color: #999; font-size: 14px;">serch is a tool which allows you to route your search queries to different search engines via Bangs and Patterns. serch allows you to specialize around specific classes of search queries, for example, you may want to search for videos on a specific site, or you may want to search for images on a specific site.</p>
+    </div>
+
+    <!-- Add this HTML just after the section-container with the serch explanation -->
+    <div class="theme-toggle-container">
+        <div class="theme-toggle">
+            <div class="theme-toggle-option light active">
+                <i class="fas fa-sun"></i>
+            </div>
+            <div class="theme-toggle-option dark">
+                <i class="fas fa-moon"></i>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -268,7 +497,8 @@
             patterns: [
                 { pattern: '^(at what|what\'s|when\'s|where\'s|how to|how does|what does|when does|where does|if the|when the|where to|look up|find the|info on|search for|what is|where is|why does|tell me|write about|explain|who is|look for|identify the|difference between|if a|when a)\\s+', destination: 'https://www.perplexity.ai/search?q=' },
                 { pattern: '^', destination: 'https://duckduckgo.com/?q=' }
-            ]
+            ],
+            theme: 'light' // Add this line
         };
 
         // Load data from cookies
@@ -278,6 +508,7 @@
                 data = cookieData;
             }
             renderData();
+            applyTheme(data.theme); // Add this line
         }
 
         // Save data to cookies
@@ -307,18 +538,19 @@
                 bangsContent.appendChild(row);
             });
 
-            // Add "+" button for bangs
-            const addBangRow = document.createElement('div');
-            addBangRow.className = 'row add-row';
-            addBangRow.innerHTML = `
+            // Add "+/-" buttons for bangs
+            const addSubBangRow = document.createElement('div');
+            addSubBangRow.className = 'row addsub-row';
+            addSubBangRow.innerHTML = `
                 <div class="gap"></div>
                 <div style="width: 45%;"></div>
                 <div class="gap"></div>
-                <div class="add-button-container">
-                    <button class="add-button">+</button>
+                <div class="addsub-button-container">
+                    <button class="addsub-button" id="removeBangButton">-</button>
+                    <button class="addsub-button" id="addBangButton">+</button>
                 </div>
             `;
-            bangsContent.appendChild(addBangRow);
+            bangsContent.appendChild(addSubBangRow);
 
             // Render patterns
             data.patterns.forEach(pattern => {
@@ -332,17 +564,18 @@
                 patternsContent.appendChild(row);
             });
 
-            // Add "+" button for patterns
-            const addPatternRow = document.createElement('div');
-            addPatternRow.className = 'row add-row';
-            addPatternRow.innerHTML = `
+            // Add "+/-" buttons for patterns
+            const addSubPatternRow = document.createElement('div');
+            addSubPatternRow.className = 'row addsub-row';
+            addSubPatternRow.innerHTML = `
                 <div style="width: 48%;"></div>
                 <div class="gap"></div>
                 <div style="width: 48%; display: flex; justify-content: flex-end;">
-                    <button class="add-button">+</button>
+                    <button class="addsub-button" id="removePatternButton">-</button>
+                    <button class="addsub-button" id="addPatternButton">+</button>
                 </div>
             `;
-            patternsContent.appendChild(addPatternRow);
+            patternsContent.appendChild(addSubPatternRow);
 
             // Add event listeners
             addEventListeners();
@@ -389,8 +622,10 @@
             });
 
             // Add new row buttons
-            const addBangButton = document.querySelector('#bangsContent .add-button');
-            const addPatternButton = document.querySelector('#patternsContent .add-button');
+            const addBangButton = document.getElementById('addBangButton');
+            const removeBangButton = document.getElementById('removeBangButton');
+            const addPatternButton = document.getElementById('addPatternButton');
+            const removePatternButton = document.getElementById('removePatternButton');
 
             addBangButton.addEventListener('click', () => {
                 data.bangs.push({ bang: '', destination: '' });
@@ -398,10 +633,26 @@
                 saveDataToCookies();
             });
 
+            removeBangButton.addEventListener('click', () => {
+                if (data.bangs.length > 1) {
+                    data.bangs.pop();
+                    renderData();
+                    saveDataToCookies();
+                }
+            });
+
             addPatternButton.addEventListener('click', () => {
                 data.patterns.push({ pattern: '', destination: '' });
                 renderData();
                 saveDataToCookies();
+            });
+
+            removePatternButton.addEventListener('click', () => {
+                if (data.patterns.length > 1) {
+                    data.patterns.pop();
+                    renderData();
+                    saveDataToCookies();
+                }
             });
         }
 
@@ -426,7 +677,8 @@
             patterns: [
                 { pattern: '^(at what|what\'s|when\'s|where\'s|how to|how does|what does|when does|where does|if the|when the|where to|look up|find the|info on|search for|what is|where is|why does|tell me|write about|explain|who is|look for|identify the|difference between|if a|when a)\\s+', destination: 'https://www.perplexity.ai/search?q=' },
                 { pattern: '^', destination: 'https://duckduckgo.com/?q=' }
-            ]
+            ],
+            theme: 'light' // Add this line
         };
 
         // Function to reset data to default
@@ -451,6 +703,7 @@
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             loadDataFromCookies();
+            applyTheme(data.theme); // Add this line to apply the theme on page load
 
             document.querySelectorAll('.dropdown-title').forEach(title => {
                 title.addEventListener('click', () => {
@@ -478,7 +731,60 @@
                     hideWarningModal();
                 }
             });
+
+            // Theme toggle functionality
+            const themeToggle = document.querySelector('.theme-toggle');
+            themeToggle.addEventListener('click', () => {
+                data.theme = data.theme === 'light' ? 'dark' : 'light';
+                applyTheme(data.theme);
+                saveDataToCookies();
+            });
         });
+
+        // Define dark theme colors
+        const darkTheme = {
+            '--background-color': '#1a1a1a',
+            '--text-color': '#ffffff',
+            '--muted-text-color': '#999999',
+            '--border-color': '#444444',
+            '--input-border-color': '#555555',
+            '--input-background': '#393939',
+            '--dropdown-background': '#2a2a2a',
+            '--button-text-color': '#bbbbbb',
+            '--button-background': '#444444',
+            '--button-border': '#666666',
+            '--button-hover': '#555555',
+            '--reset-button-hover': '#d32f2f',
+            '--reset-button-border-hover': '#b71c1c',
+            '--modal-background': 'rgba(0,0,0,0.7)',
+            '--modal-content-background': '#2a2a2a',
+            '--modal-header-background': '#333333',
+            '--confirm-reset-background': '#d32f2f',
+            '--confirm-reset-hover': '#b71c1c',
+            '--link-color': '#bbbbbb',
+            '--link-hover-color': '#ffffff'
+        };
+
+        // Function to set theme
+        function setTheme(theme) {
+            for (const [key, value] of Object.entries(theme)) {
+                document.documentElement.style.setProperty(key, value);
+            }
+        }
+
+        // Function to apply theme
+        function applyTheme(theme) {
+            if (theme === 'dark') {
+                setTheme(darkTheme);
+            } else {
+                document.documentElement.removeAttribute('style');
+            }
+            // Update the toggle UI
+            const lightOption = document.querySelector('.theme-toggle-option.light');
+            const darkOption = document.querySelector('.theme-toggle-option.dark');
+            lightOption.classList.toggle('active', theme === 'light');
+            darkOption.classList.toggle('active', theme === 'dark');
+        }
     </script>
 
     <!-- Add this HTML for the modal just before the closing </body> tag -->
@@ -491,10 +797,15 @@
                 <p style="margin: 0px;">Are you sure you want to reset to default settings? This action cannot be undone.</p>
             </div>
             <div class="modal-buttons">
-                <button id="confirmReset">Yes, Reset</button>
-                <button id="cancelReset">Cancel</button>
+                <button id="confirmReset">yes, reset</button>
+                <button id="cancelReset">cancel</button>
             </div>
         </div>
+    </div>
+
+    <!-- Add this HTML just before the closing </body> tag, after the modal -->
+    <div class="footer-bar">
+        <p>tool by <a href="https://lukalot.com">@lukalot</a> (Luka N. Arnold)</p>
     </div>
 </body>
 </html>
