@@ -4,9 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Rerouter</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #message {
+            font-family: Arial, sans-serif;
+            font-size: 18px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
     <div id="message"></div>
     <script src="rerouter.js"></script>
+    <script>
+        function getCookie(name) {
+            const value = document.cookie.split('; ').find(row => row.startsWith(name + '='));
+            return value ? JSON.parse(decodeURIComponent(value.split('=')[1])) : null;
+        }
+
+        function setTheme() {
+            const cookieData = getCookie('serchData');
+            if (cookieData && cookieData.theme) {
+                const backgroundColor = cookieData.theme === 'dark' ? '#1a1a1a' : '#ffffff';
+                document.body.style.backgroundColor = backgroundColor;
+            }
+        }
+
+        // Call setTheme when the page loads
+        window.addEventListener('load', setTheme);
+    </script>
 </body>
 </html>
