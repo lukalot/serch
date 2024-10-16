@@ -631,7 +631,7 @@
                 { bang: 'b', destination: 'https://bing.com/search?q=' }
             ],
             patterns: [
-                { pattern: '^(what|when|where|how|at what|where|if|who|look up|look for|find|info on|search for|tell me|write about|explain|identify the|difference between)', destination: 'https://www.perplexity.ai/search?q=' },
+                { pattern: '^(what|when|where|how|at what|where|if|who|look up|look for|find|info on|search for|tell me|write about|explain|identify the|difference between)\\s.+', destination: 'https://www.perplexity.ai/search?q=' },
                 { pattern: '(.+\\s.+)\\s+meaning$', destination: 'https://www.perplexity.ai/search?q=' },
                 { pattern: '^', destination: 'https://duckduckgo.com/?q=' }
             ],
