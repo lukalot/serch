@@ -509,7 +509,12 @@
             border-radius: 50%;
         }
 
+        .page-container {
+            padding-bottom: 50px;
+        }
+
         @media (max-width: 750px) {
+
             body {
                 display: flex;
                 flex-direction: column;
@@ -519,7 +524,7 @@
                 flex: 1 0 auto;
                 width: 95%;
                 margin: 10px auto;
-                padding-bottom: 70px; /* Increase padding for mobile */
+                padding-bottom: 20px;
             }
 
             .section-container,
@@ -559,10 +564,6 @@
                 position: relative;
                 padding: 5px 0;
                 padding-top: 20px;
-            }
-
-            .page-container {
-                padding-bottom: 50px; /* Adjust this value to prevent content from being hidden behind the footer */
             }
         }
     </style>
