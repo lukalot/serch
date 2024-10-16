@@ -8,15 +8,16 @@ function getCookie(name) {
 function loadConfigurationsFromCookies() {
     const cookieData = getCookie('serchData');
     if (cookieData) {
-        bangConfigurations.length = 0; // Clear existing configurations
-        bangConfigurations.push(...cookieData.bangs);
+        bangConfigurations = cookieData.bangs;
         bangPrefix = cookieData.prefix;
 
-        patternConfigurations.length = 0; // Clear existing configurations
-        patternConfigurations.push(...cookieData.patterns.map(pattern => ({
+        patternConfigurations = cookieData.patterns.map(pattern => ({
             regex: new RegExp(pattern.pattern, 'i'),
             destination: pattern.destination
-        })));
+        }));
+
+        includeDdgBangs = cookieData.includeDdgBangs;
+        currentTheme = cookieData.theme;
     }
 }
 
@@ -27,6 +28,12 @@ let bangPrefix = '';
 
 // Array of pattern configurations (will be populated from cookies)
 let patternConfigurations = [];
+
+// Flag for including DuckDuckGo bangs
+let includeDdgBangs = false;
+
+// Current theme
+let currentTheme = 'light';
 
 // Function to extract search query from URL
 function getSearchQueryFromUrl() {
@@ -51,6 +58,21 @@ function rerouteSearch(query) {
         }
     }
 
+    // Check DDG bangs if enabled
+    if (includeDdgBangs) {
+        if (query.startsWith(bangPrefix)) {
+            const bangWithSpace = query.substring(bangPrefix.length).split(' ')[0] + ' ';
+            for (const ddgBang of ddgBangs) {
+                if (query.substring(bangPrefix.length).startsWith(ddgBang.t + ' ')) {
+                    const cleanedQuery = query.substring(bangPrefix.length + ddgBang.t.length + 1);
+                    const encodedSearchTerm = encodeURIComponent(cleanedQuery).replace(/%20/g, '+');
+                    window.location.href = `${ddgBang.d}${encodedSearchTerm}`;
+                    return;
+                }
+            }
+        }
+    }
+
     // Check for patterns second
     for (const pattern of patternConfigurations) {
         if (pattern.regex.test(query)) {
@@ -63,14 +85,36 @@ function rerouteSearch(query) {
     displaySettingsPage();
 }
 
-// Function to display failure message
+// Function to display settings page
 function displaySettingsPage() {
     window.location.href = 'config.html';
 }
 
+// Function to apply theme
+function applyTheme(theme) {
+    document.body.style.backgroundColor = theme === 'dark' ? '#1a1a1a' : '#ffffff';
+    // Add more theme-related styles here if needed
+}
+
 // Execute rerouting on page load
-window.onload = function() {
+window.onload = async function() {
+    if (includeDdgBangs) {
+        await loadDdgBangs();
+    }
     loadConfigurationsFromCookies();
+    applyTheme(currentTheme);
     const searchQuery = getSearchQueryFromUrl();
     rerouteSearch(searchQuery);
 };
+
+let ddgBangs = []; // This will store the bangs from bangs.json
+
+// Function to load DDG bangs
+async function loadDdgBangs() {
+    try {
+        const response = await fetch('bangs.json');
+        ddgBangs = await response.json();
+    } catch (error) {
+        console.error('Error loading DDG bangs:', error);
+    }
+}
