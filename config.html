@@ -30,21 +30,20 @@
             --link-hover-color: #000000;
         }
 
-        body, html {
+        html, body {
             height: 100%;
             margin: 0;
             padding: 0;
             font-family: Geneva, Verdana, sans-serif;
             background-color: var(--background-color);
             color: var(--text-color);
-            width: 100%;
-            overflow-y: auto;
+            overflow-x: hidden;
         }
 
         body {
             display: grid;
             grid-template-rows: 1fr auto 1fr;
-            min-height: 100vh;
+            min-height: 100%;
         }
 
         .page-container {
@@ -56,7 +55,8 @@
             flex-direction: column;
             align-items: center;
             padding: 20px 0;
-            padding-bottom: 50px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch; /* For smoother scrolling on iOS */
         }
 
         input:focus {
@@ -151,12 +151,11 @@
         }
 
         .footer-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
+            grid-row: 3 / 4;
+            align-self: end;
             width: 100%;
             background-color: var(--background-color);
-            padding: 6px 0;
+            padding: 10px 0;
             text-align: center;
             z-index: 1000;
         }
@@ -510,35 +509,54 @@
         }
 
         @media (max-width: 750px) {
-            .page-container {
-                width: 95%;
-                padding: 20px 0 60px 0;
+            body {
+                display: flex;
+                flex-direction: column;
             }
+
+            .page-container {
+                flex: 1 0 auto;
+                width: 95%;
+                margin: 10px auto;
+                padding-bottom: 70px; /* Increase padding for mobile */
+            }
+
             .section-container,
             .section-container-nonvisible,
             .dropdown {
                 width: 100%;
             }
+
             .row {
                 flex-wrap: nowrap;
                 justify-content: space-between;
             }
+
             .row input {
-                width: calc(50% - 10px); /* Adjust width to account for prefix input */
-                font-size: 12px; /* Reduce font size for mobile */
+                width: calc(50% - 10px);
+                font-size: 14px;
             }
+
             .row input.prefix-input {
-                width: 24px; 
-                font-size: 12px;
+                width: 24px;
+                font-size: 14px;
                 padding: 5px 2px;
             }
+
             .prefix-placeholder {
                 width: 24px;
-                font-size: 12px;
+                font-size: 14px;
                 padding: 5px 2px;
             }
+
             .theme-toggle-container {
                 margin-top: 10px;
+            }
+
+            .footer-bar {
+                flex-shrink: 0;
+                position: relative;
+                padding: 5px 0;
             }
         }
     </style>
