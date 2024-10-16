@@ -10,3 +10,5 @@ You can use this tool at https://serch.online, where it is directly deployed fro
 
 Additionally, if you want to make Serch your default Search Engine so that any search in your browser URL bar is routed, you can find instructions at this Perplexity article:
 https://www.perplexity.ai/page/configuring-firefox-for-custom-.wD7An23SS.bVcJwxqyXaw
+
+![Screen 10-15 at 22 22 24](https://github.com/user-attachments/assets/89c866b5-b9f1-4d45-bf94-380be2452f50)
