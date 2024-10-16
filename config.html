@@ -151,11 +151,12 @@
         }
 
         .footer-bar {
-            grid-row: 3 / 4;
-            align-self: end;
+            position: fixed;
+            bottom: 0;
+            left: 0;
             width: 100%;
             background-color: var(--background-color);
-            padding: 10px 0;
+            padding: 6px 0;
             text-align: center;
             z-index: 1000;
         }
@@ -557,6 +558,11 @@
                 flex-shrink: 0;
                 position: relative;
                 padding: 5px 0;
+                padding-top: 20px;
+            }
+
+            .page-container {
+                padding-bottom: 50px; /* Adjust this value to prevent content from being hidden behind the footer */
             }
         }
     </style>
