@@ -302,10 +302,18 @@
         }
         .reset-button-container {
             display: flex;
-            justify-content: left;
+            justify-content: space-between;
             margin-top: 10px;
         }
-        #resetButton {
+        .left-buttons {
+            display: flex;
+            justify-content: flex-start;
+        }
+        .right-buttons {
+            display: flex;
+            justify-content: flex-end;
+        }
+        #resetButton, #exportButton, #importButton {
             padding: 8px 12px;
             background-color: var(--button-background);
             color: var(--button-text-color);
@@ -317,6 +325,12 @@
         #resetButton:hover {
             background-color: var(--reset-button-hover);
             border-color: var(--reset-button-border-hover);
+        }
+        #exportButton, #importButton {
+            margin-left: 10px;
+        }
+        #exportButton:hover, #importButton:hover {
+            background-color: var(--button-hover);
         }
         .modal {
             display: none;
@@ -589,7 +603,13 @@
             </div>
         </div>
         <div class="reset-button-container">
-            <button id="resetButton">reset to default</button>
+            <div class="left-buttons">
+                <button id="resetButton">reset to default</button>
+            </div>
+            <div class="right-buttons">
+                <button id="exportButton">export config</button>
+                <button id="importButton">import config</button>
+            </div>
         </div>
     </div>
     <div class="section-container">
@@ -848,6 +868,42 @@
             modal.classList.remove('active');
         }
 
+        // Function to export configuration
+        function exportConfiguration() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", "serch_config.json");
+            document.body.appendChild(downloadAnchorNode); // required for firefox
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        }
+
+        // Function to import configuration
+        function importConfiguration() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'application/json';
+            input.onchange = function(event) {
+                const file = event.target.files[0];
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const importedData = JSON.parse(e.target.result);
+                        data = importedData;
+                        saveDataToCookies();
+                        renderData();
+                        applyTheme(data.theme);
+                    } catch (error) {
+                        console.error('Error importing configuration:', error);
+                        alert('Error importing configuration. Please make sure the file is a valid JSON.');
+                    }
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        }
+
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             loadDataFromCookies();
@@ -887,6 +943,9 @@
                 applyTheme(data.theme);
                 saveDataToCookies();
             });
+
+            document.getElementById('exportButton').addEventListener('click', exportConfiguration);
+            document.getElementById('importButton').addEventListener('click', importConfiguration);
         });
 
         // Define dark theme colors
